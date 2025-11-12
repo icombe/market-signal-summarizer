@@ -13,7 +13,7 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 
 ### Application Flow
 
-1. Obtain news from Finnhub News API (free version) and (maybe) SEC EDGAR filings API
+1. Obtain news from Marketaux API (free version) and (maybe) SEC EDGAR filings API
 2. Normalize, dedupe, and link tickers
 3. Retrieve relevant passages for queries/tickers (Retrieval-Augmented Generation)
 4. Summarize with ChatGPT API
@@ -28,7 +28,7 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 - Node.js (for frontend)
 - Python 3.8+ (for backend)
 - OpenAI API key (for ChatGPT)
-- Finnhub API key (free tier available)
+- Marketaux API key (free tier available)
 - Alpaca API credentials (for paper trading)
 
 ### Setup
@@ -54,7 +54,7 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 4. Set up environment variables:
    - Create `.env` file in backend directory
    - Add your OpenAI API key: `OPENAI_API_KEY=your_key_here`
-   - Add Finnhub API key: `FINNHUB_API_KEY=your_key_here`
+   - Add Marketaux API key: `MARKETAUX_API_KEY=your_key_here`
    - Add Alpaca credentials if using paper trading
 
 ## Usage
