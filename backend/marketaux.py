@@ -6,3 +6,5 @@ from dotenv import load_dotenv
 load_dotenv()
 
 marketaux_key = os.getenv("MARKETAUX_API_KEY")
+
+# testing pull request
