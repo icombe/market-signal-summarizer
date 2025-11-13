@@ -25,33 +25,44 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 
 ### Prerequisites
 
-- Node.js (for frontend)
+- Node.js (for frontend) - Download from [nodejs.org](https://nodejs.org/) (LTS version recommended)
 - Python 3.8+ (for backend)
 - OpenAI API key (for ChatGPT)
 - Marketaux API key (free tier available)
 - Alpaca API credentials (for paper trading)
 
-### Setup
+### Frontend Setup
 
-1. Clone the repository:
+1. **Install Node.js and npm:**
+   - Download and install Node.js from [nodejs.org](https://nodejs.org/).
+   - npm is included with Node.js. Verify installation:
+     ```bash
+     node --version
+     npm --version
+     ```
+
+2. **Clone the repository:**
    ```bash
    git clone https://github.com/icombe/market-signal-summarizer.git
    cd market-signal-summarizer
    ```
 
-2. Install frontend dependencies:
+3. **Install frontend dependencies:**
    ```bash
    cd frontend
    npm install
    ```
+   This will install all required packages listed in `package.json`, including React, Vite, and TypeScript dependencies.
 
-3. Install backend dependencies:
+### Backend Setup
+
+1. **Install backend dependencies:**
    ```bash
    cd ../backend
    pip install -r requirements.txt
    ```
 
-4. Set up environment variables:
+2. **Set up environment variables:**
    - Create `.env` file in backend directory
    - Add your OpenAI API key: `OPENAI_API_KEY=your_key_here`
    - Add Marketaux API key: `MARKETAUX_API_KEY=your_key_here`
