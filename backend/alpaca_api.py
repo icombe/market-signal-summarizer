@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 from alpaca.trading.client import TradingClient
-from alpaca.trading.requests import GetAssetsRequest, GetOrdersRequest, MarketOrderRequest, LimitOrderRequest
-from alpaca.trading.enums import QueryOrderStatus, OrderSide, TimeInForce, AssetClass
+from alpaca.trading.requests import GetOrdersRequest, MarketOrderRequest
+from alpaca.trading.enums import QueryOrderStatus, OrderSide, TimeInForce
 
 # Global Variables
 alpaca_key = None
