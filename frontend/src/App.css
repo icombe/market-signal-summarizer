@@ -1,7 +1,23 @@
+/* Parnet Container for Nav Bar + Body Elements */
+.app-container { 
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 35%, #0ea5e9 100%);
+}
+
+/* MSS Primary Div */
+
+.app__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
 .app {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   padding: 2rem;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 35%, #0ea5e9 100%);
@@ -27,4 +43,156 @@
   font-size: 1.125rem;
   line-height: 1.6;
   color: #e2e8f0;
+}
+
+/* Nav Header Tabs */
+.header {
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header__content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__logo {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.header__logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-placeholder {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg,#bd0ee9, #3b82f6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.logo-text {
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+}
+
+.header__nav {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: #e2e8f0;
+  font-size: 1rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.nav-item:hover {
+  background-color: rgba(226, 232, 240, 0.1);
+  color: #fff;
+}
+
+.nav-item--active {
+  background-color: rgba(14, 165, 233, 0.2);
+  color: #0ea5e9;
+}
+
+.hero__split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.hero__text {
+  flex: 1;
+  text-align: left;
+}
+
+.hero__text h1 {
+  margin-bottom: 0.75rem;
+}
+
+.hero__action {
+  display: flex;
+  align-items: center;
+}
+
+/* Execute Trade Button */
+
+.cool-button {
+  background: linear-gradient(135deg, #bd0ee9, #3b82f6);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.cool-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);
+}
+
+.cool-button:active {
+  transform: translateY(0);
+}
+
+.button__icon {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.cool-button:hover .button__icon {
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .hero__split {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hero__text {
+    text-align: center;
+  }
+
+  .cool-button {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
 }
