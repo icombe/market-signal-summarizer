@@ -5,7 +5,6 @@ import json
 import requests
 from dotenv import load_dotenv
 from datetime import date
-from newspaper import Article
 import trafilatura
 
 
@@ -72,7 +71,6 @@ def getThreeArticles():
             json.dump(article, json_file, indent=4)
         i += 1
         
-    print(full_text_list)
     return full_text_list
 
 def main():
