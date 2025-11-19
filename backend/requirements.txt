@@ -1,0 +1,6 @@
+newspaper3k
+uvicorn
+python-dotenv
+alpaca-py
+openai
+requests

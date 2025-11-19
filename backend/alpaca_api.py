@@ -13,6 +13,10 @@ secret_key = None
 trading_client = None
 
 def load_keys_and_client():
+    """
+    Loads API keys from the .env file and initializes the Alpaca trading client.
+    Includes error handling for missing keys or failed initialization.
+    """
     global alpaca_key, secret_key, trading_client
 
     try:
@@ -20,9 +24,11 @@ def load_keys_and_client():
         alpaca_key = os.getenv("TEST_KEY")
         secret_key = os.getenv("TEST_SECRET_KEY")
 
+        # make sure we have keys
         if not alpaca_key or not secret_key:
             raise ValueError("Missing API keys from environment variables")
 
+        # create paper trading client
         trading_client = TradingClient(alpaca_key, secret_key, paper=True)
 
     except Exception as e:
@@ -32,6 +38,10 @@ def load_keys_and_client():
     return
 
 def get_account():
+    """
+    Fetches the Alpaca account object.
+    Returns None if the request fails.
+    """
     try:
         return trading_client.get_account()
     except Exception as e:
@@ -39,14 +49,23 @@ def get_account():
         return None
 
 def get_positions():
+    """
+    Returns all currently held positions in the account.
+    Returns None if request fails.
+    """
     try:
         return trading_client.get_all_positions()
     except Exception as e:
         print("Error fetching positions:", e)
-        return []
+        return None
 
 def get_previous_orders():
+    """
+    Retrieves the last 100 closed orders.
+    Returns None on failure.
+    """
     try:
+        # Request the most recent closed orders
         get_orders_data = GetOrdersRequest(
             status=QueryOrderStatus.CLOSED,
             limit=100,
@@ -57,13 +76,22 @@ def get_previous_orders():
 
     except Exception as e:
         print("Error fetching previous orders:", e)
-        return []
+        return None
 
 def place_order(ticker, amount):
+    """
+    Places a market buy order using a dollar amount.
+    Returns the order object on success or None on failure.
+
+    Parameters:
+    - ticker: str, stock symbol
+    - amount: numeric, the dollar amount to invest
+    """
     try:
+        # place order
         market_order_data = MarketOrderRequest(
             symbol=ticker,
-            notional=10,
+            notional=amount,
             side=OrderSide.BUY,
             time_in_force=TimeInForce.DAY
         )
@@ -75,10 +103,24 @@ def place_order(ticker, amount):
         return None
 
 def get_ytd_percent_change(ticker):
+    """
+    Calculates the year to date percent change for a given stock.
+
+    Returns a dictionary with:
+    - symbol
+    - ytd_percent_change
+    - start_close
+    - current_close
+
+    Returns an error dictionary on failure.
+    """
     try:
         data_client = StockHistoricalDataClient(alpaca_key, secret_key)
+
+        # First day of the current year
         year_start = datetime(datetime.now().year, 1, 1)
 
+        # Request historical daily bars
         req = StockBarsRequest(
             symbol_or_symbols=ticker,
             timeframe=TimeFrame.Day,
@@ -87,11 +129,13 @@ def get_ytd_percent_change(ticker):
 
         bars = data_client.get_stock_bars(req)[ticker].bars
 
+        # Check if we have enough data
         if len(bars) < 2:
             return {"error": "Not enough data for YTD calculation"}
 
         first_close = bars[0].close
         last_close = bars[-1].close
+
         pct_change = ((last_close - first_close) / first_close) * 100
 
         return {
@@ -106,11 +150,12 @@ def get_ytd_percent_change(ticker):
         return {"error": str(e)}
 
 def main():
-    load_keys_and_client()
+    # load_keys_and_client()
 
-    print(get_account())
-    print(get_positions())
-    print(get_previous_orders())
+    # print(get_account())
+    # print(get_positions())
+    # print(get_previous_orders())
+    print("Hello World")
 
 if __name__ == "__main__":
     main()
