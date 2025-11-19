@@ -9,13 +9,8 @@ import trafilatura
 
 
 
-def getArticles():
-
-    # Load environment variables from .env file
-    load_dotenv()
-    
-    # get the key from .env
-    marketaux_key = os.getenv("MARKETAUX_API_KEY")
+def getArticles(keys):
+    marketaux_key = keys["marketaux_key"]
 
     # Build a request
 
@@ -59,16 +54,16 @@ def getFullArticle(article_dict):
     text = trafilatura.extract(html)
     return text
         
-def getThreeArticles():
-    articles = getArticles()
+def getThreeArticles(keys):
+    articles = getArticles(keys)
     i = 1
     print(f"Found {len(articles)} articles.")
     full_text_list = []
     for article in articles:
         full_text_list.append(getFullArticle(article))
-        file_path = f"article_jsons/article {i}.json"
-        with open(file_path, "w") as json_file:
-            json.dump(article, json_file, indent=4)
+        # file_path = f"article_jsons/article {i}.json"
+        # with open(file_path, "w") as json_file:
+        #     json.dump(article, json_file, indent=4)
         i += 1
         
     return full_text_list
