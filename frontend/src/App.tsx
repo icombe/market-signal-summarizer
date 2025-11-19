@@ -24,6 +24,11 @@ function App() {
   const [accountValue, setAccountValue] = useState<number>(0);
   const [totalPL, setTotalPL] = useState<number>(0);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const generateMarketSignal = async () => {
     setIsGenerating(true);
@@ -60,7 +65,7 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <header className="header">
         <div className="header__content">
           {/* Logo */} 
@@ -70,6 +75,15 @@ function App() {
             </div>
           </div>
           <h1 className="header__title">Market Signal Summarizer</h1>
+          
+          {/* Dark Mode Toggle */}
+          <button 
+            className="theme-toggle"
+            onClick={toggleDarkMode}
+            aria-label="Toggle theme"
+          >
+            <span className="theme-toggle__icon">{isDarkMode ? '☀️' : '🌙'}</span>
+          </button>
         </div>
       </header>
 
