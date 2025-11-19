@@ -6,6 +6,7 @@ import requests
 from dotenv import load_dotenv
 from datetime import date
 from newspaper import Article
+import trafilatura
 
 
 
@@ -53,15 +54,11 @@ def getArticles():
 def getFullArticle(article_dict):
     url = article_dict['url']
 
-    article = Article(url)
-    article.download()
-    article.parse()
-    
-    return article.title + "\n\n" + article.text
-    # file_name = "full_text.txt"
-    # with open(file_name, "w", encoding="utf-8") as f:
-    #     f.write(article.title + "\n\n")
-    #     f.write(article.text)
+    html = requests.get(url, headers={
+        "User-Agent": "Mozilla/5.0"
+    }).text
+    text = trafilatura.extract(html)
+    return text
         
 def getThreeArticles():
     articles = getArticles()
@@ -77,22 +74,10 @@ def getThreeArticles():
         
     print(full_text_list)
     return full_text_list
-    
-
 
 def main():
     getThreeArticles()
     
-    # company_symbols = ['AAPL', 'NVDA'] # we should figure out how to get these later
-    # articles = getArticles()
-    # i = 1
-    # print(f"Found {len(articles)} articles.")
-    # for article in articles:
-    #     getFullArticle(article)
-    #     file_path = f"article {i}.json"
-    #     with open(file_path, "w") as json_file:
-    #         json.dump(article, json_file, indent=4)
-    #     i += 1
     
 
 if __name__ == "__main__":
