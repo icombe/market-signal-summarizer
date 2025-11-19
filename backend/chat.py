@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv, find_dotenv
 import json
 import requests
+from marketaux import getThreeArticles
+import json
 
 load_dotenv()
 
@@ -41,7 +43,7 @@ Here is the article:
     
     headers = {
         "Authorization" : f"Bearer {chat_key}",
-        "Content-Type" : "application/json:"
+        "Content-Type" : "application/json"
     }
 
     body = {
@@ -70,16 +72,14 @@ Here is the article:
     return json.loads(text)
 
 def main():
-    article_files = [f for f in os.listdir() if f.endswith(".txt")]
+    # Retrieve full article texts from Marketaux
+    articles = getThreeArticles()
 
-    for i, file_name in enumerate(article_files, start=1):
-        with open(file_name, "r", encoding="utf-8") as f:
-            article_text = f.read()
-        
-        result = article_analysis(article_text)
+    # Run each article through GPT-5-Nano and save output
+    for i, text in enumerate(articles, start=1):
+        result = article_analysis(text)
 
-        output_file = f"analysis_{i}.json"
-        with open(output_file, "w", encoding="utf-8") as out:
+        with open(f"analysis_{i}.json", "w", encoding="utf-8") as out:
             json.dump(result, out, indent=4)
 
 if __name__ == "__main__":
