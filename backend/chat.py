@@ -6,13 +6,13 @@ import requests
 from marketaux import getThreeArticles
 import json
 
-load_dotenv()
+# load_dotenv()
 
-chat_key = os.getenv("OPENAI_API_KEY")
-chat_responses_url = "https://api.openai.com/v1/responses"
-model = "gpt-5-nano"
+# chat_key = os.getenv("OPENAI_API_KEY")
+# chat_responses_url = "https://api.openai.com/v1/responses"
+# model = "gpt-5-nano"
 
-def article_analysis(article_text: str, source: str = "unknown") -> dict:
+def article_analysis(chat_key, chat_responses_url, model, article_text: str, source: str = "unknown") -> dict:
     """
     Takes the entire article from marketaux and uses gpt-5-nano to summarize these factors into a JSON dictionary:
     - summary
@@ -70,6 +70,20 @@ Here is the article:
     
     # Converts JSON output into a Python dictionary
     return json.loads(text)
+
+def test_chat(keys):
+    chat_key = keys["chat_key"]
+    chat_responses_url = "https://api.openai.com/v1/responses"
+    model = "gpt-5-nano"
+        # Retrieve full article texts from Marketaux
+    articles = getThreeArticles(keys=keys)
+
+    # Run each article through GPT-5-Nano and save output
+    for i, text in enumerate(articles, start=1):
+        result = article_analysis(chat_key=chat_key, chat_responses_url=chat_responses_url, model=model, article_text=text)
+
+        with open(f"analysis_{i}.json", "w", encoding="utf-8") as out:
+            json.dump(result, out, indent=4)
 
 def main():
     # Retrieve full article texts from Marketaux
