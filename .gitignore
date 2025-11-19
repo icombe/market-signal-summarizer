@@ -2,7 +2,7 @@
 backend/.env
 .env
 backend/__pycache__
-.json
+*.json
 
 # Frontend
 frontend/node_modules
