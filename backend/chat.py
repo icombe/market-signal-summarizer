@@ -54,12 +54,12 @@ Here is the article:
     # Sends the prompt request to OpenAi's API
     response = requests.post(chat_responses_url, headers=headers, json=body, timeout=30)
 
-    # Parses the JSON outpute
+    # Parses the JSON output
     data = response.json()
 
     # Extracts the output from the model
     text = ""
-    if "output" in data and isinstance(data["outpout"], list):
+    if "output" in data and isinstance(data["output"], list):
         for item in data["output"]:
             if "content" in item:
                 for c in item["content"]:
@@ -68,5 +68,21 @@ Here is the article:
     
     # Converts JSON output into a Python dictionary
     return json.loads(text)
+
+def main():
+    article_files = [f for f in os.listdir() if f.endswith(".txt")]
+
+    for i, file_name in enumerate(article_files, start=1):
+        with open(file_name, "r", encoding="utf-8") as f:
+            article_text = f.read()
+        
+        result = article_analysis(article_text)
+
+        output_file = f"analysis_{i}.json"
+        with open(output_file, "w", encoding="utf-8") as out:
+            json.dump(result, out, indent=4)
+
+if __name__ == "__main__":
+    main()
 
 

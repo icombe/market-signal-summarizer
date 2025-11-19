@@ -10,6 +10,7 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 - **Backend:** Python with FastAPI for secure communication with Alpaca API and web services. Custom solutions using Starlette and Pydantic for data validation and async operations.
 - **Deployment:** Local server using Uvicorn (ASGI) to minimize costs and legal constraints.
 - **LLM:** ChatGPT API (via OpenAI) for summarization.
+- **Market Data:** marketaux API for current financial news data
 
 ### Application Flow
 
