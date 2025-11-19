@@ -74,22 +74,10 @@ def getThreeArticles():
         
     print(full_text_list)
     return full_text_list
-    
-
 
 def main():
     getThreeArticles()
     
-    # company_symbols = ['AAPL', 'NVDA'] # we should figure out how to get these later
-    # articles = getArticles()
-    # i = 1
-    # print(f"Found {len(articles)} articles.")
-    # for article in articles:
-    #     getFullArticle(article)
-    #     file_path = f"article {i}.json"
-    #     with open(file_path, "w") as json_file:
-    #         json.dump(article, json_file, indent=4)
-    #     i += 1
     
 
 if __name__ == "__main__":
