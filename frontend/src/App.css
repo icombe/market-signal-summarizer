@@ -24,6 +24,29 @@
   margin: 0 auto;
 }
 
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.generate-section {
+  background-color: rgba(15, 23, 42, 0.6);
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.3);
+}
+
+.history-container {
+  background-color: rgba(15, 23, 42, 0.6);
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.3);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .panel {
   background-color: rgba(15, 23, 42, 0.6);
   padding: 2rem;
@@ -100,6 +123,12 @@
 .history-section {
   flex: 1;
   overflow-y: auto;
+}
+
+.history-container h2 {
+  font-size: 1.75rem;
+  margin: 0 0 1rem 0;
+  color: #f8fafc;
 }
 
 .history-list {
@@ -317,7 +346,7 @@
 
 /* Nav Header */
 .header {
-  background-color: rgba(15, 23, 42, 0.95);
+  background-color: rgba(15, 23, 42, 0.50);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(226, 232, 240, 0.1);
   position: sticky;
@@ -328,22 +357,25 @@
 .header__content {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 1rem 2rem;
+  padding: 1.5rem 1.5rem;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: center;
+  position: relative;
 }
 
 .header__logo {
   display: flex;
   align-items: center;
+  position: absolute;
+  left: 1.5rem;
 }
 
 .logo-placeholder {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background: linear-gradient(135deg, #bd0ee9, #3b82f6);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -353,12 +385,12 @@
 .logo-text {
   color: white;
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1rem;
   letter-spacing: 0.5px;
 }
 
 .header__title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin: 0;
   color: #f8fafc;
   font-weight: 600;
@@ -391,10 +423,14 @@
   }
 
   .header__content {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .header__logo {
+    left: 1rem;
   }
 
   .header__title {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
 }

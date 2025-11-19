@@ -76,9 +76,9 @@ function App() {
       <main className="app">
         <div className="split-layout">
           {/* Left Half - Generate & History */}
-          <section className="panel panel--left">
-            <div className="panel__section">
-              <h2>Generate Market Signal</h2>
+          <div className="left-column">
+            {/* Generate Signal Section */}
+            <div className="generate-section">
               <button 
                 className="generate-button"
                 onClick={generateMarketSignal}
@@ -91,30 +91,33 @@ function App() {
               </button>
             </div>
 
-            <div className="panel__section history-section">
+            {/* History Section */}
+            <div className="history-container">
               <h2>History</h2>
-              <div className="history-list">
-                {signals.length === 0 ? (
-                  <p className="empty-state">No signals generated yet. Click the button above to generate your first market signal.</p>
-                ) : (
-                  signals.map((signal) => (
-                    <div key={signal.id} className="history-item">
-                      <div className="history-item__header">
-                        <span className="history-item__time">{signal.timestamp}</span>
-                        <span className={`history-item__sentiment history-item__sentiment--${signal.sentiment.toLowerCase()}`}>
-                          {signal.sentiment}
-                        </span>
+              <div className="history-section">
+                <div className="history-list">
+                  {signals.length === 0 ? (
+                    <p className="empty-state">No signals generated yet. Click the button above to generate your first market signal.</p>
+                  ) : (
+                    signals.map((signal) => (
+                      <div key={signal.id} className="history-item">
+                        <div className="history-item__header">
+                          <span className="history-item__time">{signal.timestamp}</span>
+                          <span className={`history-item__sentiment history-item__sentiment--${signal.sentiment.toLowerCase()}`}>
+                            {signal.sentiment}
+                          </span>
+                        </div>
+                        <p className="history-item__summary">{signal.summary}</p>
+                        <div className="history-item__action">
+                          Action: <strong>{signal.action}</strong>
+                        </div>
                       </div>
-                      <p className="history-item__summary">{signal.summary}</p>
-                      <div className="history-item__action">
-                        Action: <strong>{signal.action}</strong>
-                      </div>
-                    </div>
-                  ))
-                )}
+                    ))
+                  )}
+                </div>
               </div>
             </div>
-          </section>
+          </div>
 
           {/* Right Half - Profit/Loss */}
           <section className="panel panel--right">
