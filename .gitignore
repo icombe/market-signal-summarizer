@@ -1,6 +1,7 @@
+
 # Backend
-backend/.env
 .env
+backend/.env
 backend/__pycache__
 *.json
 
