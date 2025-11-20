@@ -6,7 +6,7 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 
 ### System Components
 
-- **Frontend:** React with Vite, Tailwind CSS, Axios for API calls, Zustand for state management. Optional use of Bootstrap or Recharts for UI consistency.
+- **Frontend:** React with Vite Using Recharts for Alpaca portfolio data.
 - **Backend:** Python with FastAPI for secure communication with Alpaca API and web services. Custom solutions using Starlette and Pydantic for data validation and async operations.
 - **Deployment:** Local server using Uvicorn (ASGI) to minimize costs and legal constraints.
 - **LLM:** ChatGPT API (via OpenAI) for summarization.
@@ -27,6 +27,7 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 ### Prerequisites
 
 - Node.js (for frontend) - Download from [nodejs.org](https://nodejs.org/) (LTS version recommended)
+- NPM Version 11.6.2
 - Python 3.8+ (for backend)
 - OpenAI API key (for ChatGPT)
 - Marketaux API key (free tier available)
@@ -128,3 +129,7 @@ npm test
 ## License
 
 This project is for educational purposes as part of CSCI/DSCI 470/570.
+
+## Contributions
+
+[Hamster Loading Wheel](https://uiverse.io/Nawsome/wet-mayfly-23)

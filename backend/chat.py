@@ -5,16 +5,19 @@ import json
 import requests
 from marketaux import getThreeArticles
 import json
+import re
 
-load_dotenv()
-
-chat_key = os.getenv("OPENAI_API_KEY")
-chat_responses_url = "https://api.openai.com/v1/responses"
-model = "gpt-5-nano"
-
-def article_analysis(article_text: str, source: str = "unknown") -> dict:
+def extract_json_block(text: str) -> str:
     """
-    Takes the entire article from marketaux and uses gpt-5-nano to summarize these factors into a JSON dictionary:
+    Extracts the primary JSON object in the string from marketaux, ignoring any extra text.
+    """
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if match:
+        return match.group(0)
+
+def article_analysis(chat_key, chat_responses_url, model, article_text: str, source: str = "unknown") -> dict:
+    """
+    Takes the entire article from marketaux and uses GPT-5-Nano to summarize these factors into a JSON dictionary:
     - summary
     - sentiment_score
     - sentiment_label
@@ -22,7 +25,7 @@ def article_analysis(article_text: str, source: str = "unknown") -> dict:
     - suggested_action
     - confidence
     """
-
+    
     prompt = f"""
 You are a financial analysis machine that takes news about the latest financial and stock market developments and summarizes
 them. Given the following full article, produce only a valid JSON object that contains these fields:
@@ -39,50 +42,59 @@ article source: {source}
 
 Here is the article:
 {article_text}
-    """
-    
+"""
+
     headers = {
-        "Authorization" : f"Bearer {chat_key}",
-        "Content-Type" : "application/json"
+        "Authorization": f"Bearer {chat_key}",
+        "Content-Type": "application/json"
     }
 
     body = {
-        "model" : model,
-        "input" : prompt,
-        "temperature" : 0.0,
-        "max_output_tokens" : 500
+        "model": model,
+        "input": prompt,
+        "max_output_tokens": 3000
     }
 
-    # Sends the prompt request to OpenAi's API
+    # Sends the request to the chat api
     response = requests.post(chat_responses_url, headers=headers, json=body, timeout=30)
-
-    # Parses the JSON output
     data = response.json()
 
-    # Extracts the output from the model
+    # Extracts the text output from the response
     text = ""
     if "output" in data and isinstance(data["output"], list):
         for item in data["output"]:
             if "content" in item:
                 for c in item["content"]:
-                    if c.get("type") == "output_text":
+                    if c.get("type") in ["text", "output_text"]:
                         text += c.get("text", "")
-    
-    # Converts JSON output into a Python dictionary
-    return json.loads(text)
+    text = text.strip()
 
-def main():
-    # Retrieve full article texts from Marketaux
-    articles = getThreeArticles()
+    # Extracts only the JSON object from the text output
+    json_text = extract_json_block(text)
+    parsed = json.loads(json_text)
 
-    # Run each article through GPT-5-Nano and save output
+    return parsed
+
+
+def test_chat(keys):
+    chat_key = keys["chat_key"]
+    chat_responses_url = "https://api.openai.com/v1/responses"
+    model = "gpt-5-nano"
+
+    articles = getThreeArticles(keys=keys)
+
     for i, text in enumerate(articles, start=1):
-        result = article_analysis(text)
+        result = article_analysis(
+            chat_key=chat_key,
+            chat_responses_url=chat_responses_url,
+            model=model,
+            article_text=text
+            )
 
+        # Save JSON to file
         with open(f"analysis_{i}.json", "w", encoding="utf-8") as out:
             json.dump(result, out, indent=4)
 
-if __name__ == "__main__":
-    main()
+    print("Finished processing all articles.")
 
 
