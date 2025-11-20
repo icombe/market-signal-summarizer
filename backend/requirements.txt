@@ -4,3 +4,4 @@ python-dotenv
 alpaca-py
 openai
 requests
+trafilatura==2.0.0
