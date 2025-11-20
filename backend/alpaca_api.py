@@ -37,6 +37,9 @@ def load_keys_and_client():
 
     return
 
+def get_porfolio():
+    return trading_client.get_portfolio_history()
+
 def get_account():
     """
     Fetches the Alpaca account object.
