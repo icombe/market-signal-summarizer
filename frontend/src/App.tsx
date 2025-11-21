@@ -82,7 +82,7 @@ function App() {
             onClick={toggleDarkMode}
             aria-label="Toggle theme"
           >
-            <span className="theme-toggle__icon">{isDarkMode ? '☀️' : '🌙'}</span>
+            <span className="theme-toggle__text">{isDarkMode ? 'Light' : 'Dark'}</span>
           </button>
         </div>
       </header>
@@ -91,73 +91,17 @@ function App() {
         <div className="split-layout">
           {/* Left Half - Generate & History */}
           <div className="left-column">
-             <div style={{ marginBottom: '30px', textAlign: 'center' }}>
+            <div className="generate-section">
               <button 
+                className="generate-button"
                 onClick={generateMarketSignal}
                 disabled={isGenerating}
-                style={{
-                  alignItems: 'center',
-                  backgroundImage: 'linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb)',
-                  border: '0',
-                  borderRadius: '8px',
-                  boxShadow: 'rgba(151, 65, 252, 0.2) 0 15px 30px -5px',
-                  boxSizing: 'border-box',
-                  color: '#ffffff',
-                  display: 'flex',
-                  fontSize: '18px',
-                  justifyContent: 'center',
-                  lineHeight: '1em',
-                  maxWidth: '100%',
-                  minWidth: '140px',
-                  padding: '3px',
-                  textDecoration: 'none',
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                  touchAction: 'manipulation',
-                  whiteSpace: 'nowrap',
-                  cursor: isGenerating ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.3s',
-                  opacity: isGenerating ? 0.7 : 1,
-                  margin: '0 auto'
-                }}
-                onMouseOver={(e) => {
-                  if (!isGenerating) {
-                    const span = e.currentTarget.querySelector('span');
-                    if (span) (span as HTMLElement).style.background = 'none';
-                  }
-                }}
-                onMouseOut={(e) => {
-                  const span = e.currentTarget.querySelector('span');
-                  if (span) (span as HTMLElement).style.background = 'rgb(5, 6, 45)';
-                }}
-                onMouseDown={(e) => {
-                  if (!isGenerating) {
-                    e.currentTarget.style.transform = 'scale(0.9)';
-                  }
-                }}
-                onMouseUp={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
               >
-              <span style={{
-                backgroundColor: 'rgb(5, 6, 45)',
-                padding: '16px 24px',
-                borderRadius: '6px',
-                width: '100%',
-                height: '100%',
-                transition: '300ms',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '18px',
-                fontWeight: '700',
-                letterSpacing: '0.5px',
-              }}>
+                <span className="button__text">
                   {isGenerating ? 'Generating...' : 'Generate Signal'}
                 </span>
               </button>
-          </div>
+            </div>
 
             {/* History Section */}
             <div className="history-container">
