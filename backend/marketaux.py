@@ -9,8 +9,9 @@ import trafilatura
 
 
 
-def getArticles(keys):
-    marketaux_key = keys["marketaux_key"]
+def getArticles():
+    # marketaux_key = keys["marketaux_key"]
+    marketaux_key = os.getenv("MARKETAUX_API_KEY")
 
     # Build a request
 
@@ -25,7 +26,7 @@ def getArticles(keys):
         # 'published_after': formatted_date,      # getting articles from today
         # 'entity_types':["index","equity"],      # example entity_types    (use join)
         # 'industries': [Technology,Industrials], # example industries      (use join)
-        # 'countries': ",".join(['us', 'ca']),    # example countries
+        'countries': 'us',    # example countries
         # 'sentiment_gte': (-1, 1),               # gets sentiment greater than number provided
         # 'filter_entities': True,                # uncomment if you want to only get your company entities
         # 'must_have_entities': True,             # uncomment if you want only articles that have your companies in them
@@ -54,8 +55,8 @@ def getFullArticle(article_dict):
     text = trafilatura.extract(html)
     return text
         
-def getThreeArticles(keys):
-    articles = getArticles(keys)
+def getThreeArticles():
+    articles = getArticles()
     i = 1
     print(f"Found {len(articles)} articles.")
     full_text_list = []

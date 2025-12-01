@@ -17,7 +17,7 @@ def main():
     
     # Testing chat.py and marketaux.py
     keys_dict = getKeys()
-    chat.test_chat(keys_dict)
+    chat.test_chat()
     
     return
 
