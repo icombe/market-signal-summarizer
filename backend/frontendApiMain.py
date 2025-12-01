@@ -1,9 +1,13 @@
+# Make any API Calls here.
+
+# Follow the format for generateSignal()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from datetime import datetime
 
-# import main
+import main
 
 app = FastAPI()
 
@@ -17,20 +21,20 @@ app.add_middleware(
 
 @app.get("/signal")
 def generate_signal():
-
+    apiData = main.generateSignal()
     print(f'''
         "id": {int(datetime.now().timestamp())},
         "timestamp": {datetime.now().strftime("%Y-%m-%d %H:%M:%S")},
-        "summary": "Python-generated market signal",
-        "sentiment": "Positive",
-        "action": "Buy"
+        "summary": "{apiData[0]['summary']}",
+        "sentiment": "{apiData[0]['sentiment']}",
+        "action": "{apiData[0]['action']}"
     ''')
     return {
         "id": int(datetime.now().timestamp()),
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "summary": "Python-generated market signal",
-        "sentiment": "Positive",
-        "action": "Buy"
+        "summary": apiData[0]['summary'],
+        "sentiment": apiData[0]['sentiment'],
+        "action": apiData[0]['action']
     }
 
 if __name__ == "__main__":
