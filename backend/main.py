@@ -1,6 +1,20 @@
 from dotenv import load_dotenv
 import os
 import chat
+import marketaux
+
+def generateSignal():
+    articles = marketaux.getThreeArticles()
+    article_dicts = chat.get_dicts(articles)
+    front_end_dicts = []
+    for article in article_dicts:
+        new_dict = {}
+        new_dict['summary'] = article['summary']
+        new_dict['sentiment'] = article['sentiment_score']
+        new_dict['action'] = article['suggested_action']
+        front_end_dicts.append(new_dict)
+        
+    return front_end_dicts
 
 def getKeys():
     load_dotenv()
@@ -16,8 +30,9 @@ def getKeys():
 def main():
     
     # Testing chat.py and marketaux.py
-    keys_dict = getKeys()
-    chat.test_chat()
+    # keys_dict = getKeys()
+    # chat.test_chat()
+    print(generateSignal())
     
     return
 

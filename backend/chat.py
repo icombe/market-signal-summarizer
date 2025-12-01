@@ -26,6 +26,7 @@ def article_analysis(chat_responses_url, model, article_text: str, source: str =
     - confidence
     """
     
+    load_dotenv()
     chat_key = os.getenv("OPENAI_API_KEY")
     
     prompt = f"""
@@ -99,19 +100,14 @@ def test_chat():
 
     print("Finished processing all articles.")
 
-
-def generate_signal():
-    # chat_key = keys["chat_key"]
+def get_dicts(articles):
     chat_responses_url = "https://api.openai.com/v1/responses"
     model = "gpt-5-nano"
-
-    articles = getThreeArticles()
     
     signal_dicts = []
 
     for i, text in enumerate(articles, start=1):
         result = article_analysis(
-            # chat_key=chat_key,
             chat_responses_url=chat_responses_url,
             model=model,
             article_text=text

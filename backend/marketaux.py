@@ -10,9 +10,10 @@ import trafilatura
 
 
 def getArticles():
+    load_dotenv()
     # marketaux_key = keys["marketaux_key"]
     marketaux_key = os.getenv("MARKETAUX_API_KEY")
-
+    
     # Build a request
 
     conn = http.client.HTTPSConnection('api.marketaux.com')
