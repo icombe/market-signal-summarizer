@@ -9,7 +9,7 @@ import trafilatura
 
 
 
-def getArticles():
+def getArticles(num_articles):
     load_dotenv()
     # marketaux_key = keys["marketaux_key"]
     marketaux_key = os.getenv("MARKETAUX_API_KEY")
@@ -23,7 +23,7 @@ def getArticles():
     params = urllib.parse.urlencode({
         'api_token': marketaux_key,             # our api key
         # 'symbols': ",".join(company_symbols),   # what companies we want to focus on
-        'limit': 3,                             # number of articles
+        'limit': num_articles,                             # number of articles
         # 'published_after': formatted_date,      # getting articles from today
         # 'entity_types':["index","equity"],      # example entity_types    (use join)
         # 'industries': [Technology,Industrials], # example industries      (use join)
@@ -40,8 +40,8 @@ def getArticles():
     data = res.read()
     decoded_data = data.decode('utf-8')
     full_json = json.loads(decoded_data)
-    # with open("full_json.json", "w") as json_file:
-    #     json.dump(full_json, json_file, indent=4)
+    with open("full_json.json", "w") as json_file:
+        json.dump(full_json, json_file, indent=4)
     
     article_dict = full_json['data'] # using json to load the data into python dict
 
@@ -55,9 +55,14 @@ def getFullArticle(article_dict):
     }).text
     text = trafilatura.extract(html)
     return text
+
+def getOneArticle():
+    article = getArticles(1)
+    full_text = getFullArticle(article[0])
+    return full_text
         
 def getThreeArticles():
-    articles = getArticles()
+    articles = getArticles(3)
     i = 1
     print(f"Found {len(articles)} articles.")
     full_text_list = []
