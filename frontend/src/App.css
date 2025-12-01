@@ -36,6 +36,26 @@
   box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1);
 }
 
+.app-container.light-mode .generate-button {
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  box-shadow: rgba(151, 65, 252, 0.3) 0 15px 30px -5px;
+}
+
+.app-container.light-mode .button__text {
+  background-color: rgb(248, 250, 252);
+  color: #0f172a;
+}
+
+.app-container.light-mode .generate-button:hover:not(:disabled) .button__text {
+  background: none;
+  color: #ffffff;
+}
+
+.app-container.light-mode .generate-button:disabled .button__text {
+  background-color: rgb(248, 250, 252);
+  color: #0f172a;
+}
+
 .app-container.light-mode .history-container h2,
 .app-container.light-mode .panel h2 {
   color: #0f172a;
@@ -182,31 +202,38 @@
 
 /* Generate Button */
 .generate-button {
-  background: linear-gradient(135deg, #bd0ee9, #3b82f6);
-  border: none;
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  font-size: 1.125rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
   align-items: center;
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #ffffff;
+  display: flex;
+  font-size: 18px;
   justify-content: center;
-  gap: 0.75rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 140px;
+  padding: 3px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s;
   font-family: 'Inter', system-ui, sans-serif;
   width: 100%;
 }
 
-.generate-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);
+.generate-button:hover:not(:disabled),
+.generate-button:active:not(:disabled) {
+  outline: 0;
 }
 
 .generate-button:active:not(:disabled) {
-  transform: translateY(0);
+  transform: scale(0.9);
 }
 
 .generate-button:disabled {
@@ -214,13 +241,23 @@
   cursor: not-allowed;
 }
 
-.button__icon {
-  font-size: 1.5rem;
-  transition: transform 0.3s ease;
+.button__text {
+  background-color: rgb(5, 6, 45);
+  padding: 16px 24px;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  transition: 300ms;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
-.generate-button:hover:not(:disabled) .button__icon {
-  transform: scale(1.2);
+.generate-button:hover:not(:disabled) .button__text {
+  background: none;
+}
+
+.generate-button:disabled .button__text {
+  background-color: rgb(5, 6, 45);
 }
 
 /* History Section */
@@ -503,34 +540,42 @@
 .theme-toggle {
   position: absolute;
   right: 1.5rem;
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(59, 130, 246, 0.15);
   border: 1px solid rgba(59, 130, 246, 0.3);
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .theme-toggle:hover {
-  background: rgba(59, 130, 246, 0.3);
-  transform: scale(1.05);
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.4);
 }
 
-.theme-toggle__icon {
-  font-size: 1.25rem;
-  line-height: 1;
+.theme-toggle__text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  letter-spacing: 0.3px;
 }
 
 .app-container.light-mode .theme-toggle {
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.15);
 }
 
 .app-container.light-mode .theme-toggle:hover {
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(15, 23, 42, 0.12);
+  border-color: rgba(15, 23, 42, 0.25);
+}
+
+.app-container.light-mode .theme-toggle__text {
+  color: #1e293b;
 }
 
 /* Responsive Design */
@@ -555,8 +600,11 @@
   }
 
   .generate-button {
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
+    font-size: 16px;
+  }
+
+  .button__text {
+    padding: 14px 20px;
   }
 
   .header__content {
@@ -569,11 +617,11 @@
 
   .theme-toggle {
     right: 1rem;
-    padding: 0.4rem 0.6rem;
+    padding: 0.4rem 0.75rem;
   }
 
-  .theme-toggle__icon {
-    font-size: 1rem;
+  .theme-toggle__text {
+    font-size: 0.75rem;
   }
 
   .header__title {
