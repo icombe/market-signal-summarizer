@@ -15,7 +15,7 @@ def extract_json_block(text: str) -> str:
     if match:
         return match.group(0)
 
-def article_analysis(chat_key, chat_responses_url, model, article_text: str, source: str = "unknown") -> dict:
+def article_analysis(chat_responses_url, model, article_text: str, source: str = "unknown") -> dict:
     """
     Takes the entire article from marketaux and uses GPT-5-Nano to summarize these factors into a JSON dictionary:
     - summary
@@ -25,6 +25,9 @@ def article_analysis(chat_key, chat_responses_url, model, article_text: str, sou
     - suggested_action
     - confidence
     """
+    
+    load_dotenv()
+    chat_key = os.getenv("OPENAI_API_KEY")
     
     prompt = f"""
 You are a financial analysis machine that takes news about the latest financial and stock market developments and summarizes
@@ -76,16 +79,16 @@ Here is the article:
     return parsed
 
 
-def test_chat(keys):
-    chat_key = keys["chat_key"]
+def test_chat():
+    # chat_key = keys["chat_key"]
     chat_responses_url = "https://api.openai.com/v1/responses"
     model = "gpt-5-nano"
 
-    articles = getThreeArticles(keys=keys)
+    articles = getThreeArticles()
 
     for i, text in enumerate(articles, start=1):
         result = article_analysis(
-            chat_key=chat_key,
+            # chat_key=chat_key,
             chat_responses_url=chat_responses_url,
             model=model,
             article_text=text
@@ -97,4 +100,21 @@ def test_chat(keys):
 
     print("Finished processing all articles.")
 
+def get_dicts(articles):
+    chat_responses_url = "https://api.openai.com/v1/responses"
+    model = "gpt-5-nano"
+    
+    signal_dicts = []
 
+    for i, text in enumerate(articles, start=1):
+        result = article_analysis(
+            chat_responses_url=chat_responses_url,
+            model=model,
+            article_text=text
+            )
+
+        signal_dicts.append(result)
+
+    print("Finished processing all articles.")
+    
+    return signal_dicts
