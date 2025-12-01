@@ -30,26 +30,28 @@ function App() {
     setIsDarkMode(!isDarkMode);
   };
 
-  const generateMarketSignal = async () => {
-    setIsGenerating(true);
-    try {
-      // TODO: Replace with actual API call to backend
-      // For now, creating a mock signal
-      const newSignal: MarketSignal = {
-        id: Date.now(),
-        timestamp: new Date().toLocaleString(),
-        summary: 'Market analysis generated',
-        sentiment: 'Positive',
-        action: 'Hold',
-      };
-      
-      setSignals([newSignal, ...signals]);
-    } catch (error) {
-      console.error('Error generating signal:', error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+const generateMarketSignal = async () => {
+  setIsGenerating(true);
+  try {
+    const response = await fetch("http://127.0.0.1:8000/signal");
+    const newSignal: MarketSignal = await response.json();
+
+    // console.log('Received signal:', newSignal);
+    console.log('Signal details:', {
+      id: newSignal.id,
+      timestamp: newSignal.timestamp,
+      summary: newSignal.summary,
+      sentiment: newSignal.sentiment,
+      action: newSignal.action
+    });
+
+    setSignals([newSignal, ...signals]); // Remove the duplicate
+  } catch (error) {
+    console.error('Error generating signal:', error);
+  } finally {
+    setIsGenerating(false);
+  }
+};
 
   const fetchPositions = async () => {
     try {
