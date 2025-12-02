@@ -25,16 +25,16 @@ def generate_signal():
     print(f'''
         "id": {int(datetime.now().timestamp())},
         "timestamp": {datetime.now().strftime("%Y-%m-%d %H:%M:%S")},
-        "summary": "{apiData[0]['summary']}",
-        "sentiment": "{apiData[0]['sentiment']}",
-        "action": "{apiData[0]['action']}"
+        "summary": "{apiData['summary']}",
+        "sentiment": "{apiData['sentiment']}",
+        "action": "{apiData['action']}"
     ''')
     return {
         "id": int(datetime.now().timestamp()),
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "summary": apiData[0]['summary'],
-        "sentiment": apiData[0]['sentiment'],
-        "action": apiData[0]['action']
+        "summary": apiData['summary'],
+        "sentiment": apiData['sentiment'],
+        "action": apiData['action']
     }
 
 if __name__ == "__main__":

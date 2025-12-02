@@ -23,7 +23,7 @@ def generateSignal():
     for article in article_dicts:
         new_dict = {}
         new_dict['summary'] = article['summary']
-        new_dict['sentiment'] = article['sentiment_score']
+        new_dict['sentiment'] = article['sentiment_label']
         new_dict['action'] = article['suggested_action']
         front_end_dicts.append(new_dict)
         
