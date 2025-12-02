@@ -72,6 +72,22 @@ An LLM-based application that summarizes financial news from Finnhub News API an
 
 ## Usage
 
+1. download all dependancies (See Above)
+
+2. Start by running the backend integration application in one terminal
+```
+python ./frontendApiMain.py
+```
+
+3. Start the Frontend applicaton in another terminal and Ctrl + Click the localhost link to bring up the website
+```
+npm run dev
+```
+
+4. Click Generate prediction *Note* this may take a while.
+
+5. Admire your Alpaca Overview
+
 ### Running the Application
 
 1. Start the backend server:

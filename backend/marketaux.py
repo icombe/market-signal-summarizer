@@ -40,8 +40,8 @@ def getArticles(num_articles):
     data = res.read()
     decoded_data = data.decode('utf-8')
     full_json = json.loads(decoded_data)
-    with open("full_json.json", "w") as json_file:
-        json.dump(full_json, json_file, indent=4)
+    # with open("full_json.json", "w") as json_file: # Removed .json files
+    #     json.dump(full_json, json_file, indent=4)
     
     article_dict = full_json['data'] # using json to load the data into python dict
 
