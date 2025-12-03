@@ -1,6 +1,8 @@
 import { useState , useEffect } from 'react';
 import './App.css';
 
+
+
 interface TickerRecommendation {
   ticker: string;
   recommended_action: string;
@@ -31,6 +33,7 @@ interface AccountData {
   buying_power: number;
   total_unrealized_pl: number;
 }
+
 function App() {
   const [signals, setSignals] = useState<MarketSignal[]>([]);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -43,48 +46,56 @@ function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isLoadingPositions, setIsLoadingPositions] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
+  
+  // Trading form state
+  const [ticker, setTicker] = useState('');
+  const [amount, setAmount] = useState('');
+  const [isTrading, setIsTrading] = useState(false);
+  //notifications
+  const [notification, setNotification] = useState<string>('');
+
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-const generateMarketSignal = async () => {
-  setIsGenerating(true);
-  try {
-    const response = await fetch("http://127.0.0.1:8000/signal");
-    const newSignals: MarketSignal[] = await response.json();
+  const generateMarketSignal = async () => {
+    setIsGenerating(true);
+    try {
+      const response = await fetch("http://127.0.0.1:8000/signal");
+      const newSignals: MarketSignal[] = await response.json();
 
-    console.log('=== NEW SIGNALS FROM API ===');
-    newSignals.forEach(sig => {
-      console.log("Signal:", sig.id, sig.timestamp);
-    });
-
-    setSignals(prevSignals => {
-      console.log('=== PREVIOUS SIGNALS ===');
-      prevSignals.forEach(s => console.log("Prev:", s.id, s.timestamp));
-      
-      const existingKeys = new Set(prevSignals.map(s => `${s.id}-${s.timestamp}`));
-      console.log('Existing keys:', Array.from(existingKeys));
-      
-      const uniqueNewSignals = newSignals.filter(s => {
-        const key = `${s.id}-${s.timestamp}`;
-        const isDupe = existingKeys.has(key);
-        console.log(`Checking ${key}: ${isDupe ? 'DUPLICATE' : 'UNIQUE'}`);
-        return !isDupe;
+      console.log('=== NEW SIGNALS FROM API ===');
+      newSignals.forEach(sig => {
+        console.log("Signal:", sig.id, sig.timestamp);
       });
-      
-      console.log('=== UNIQUE NEW SIGNALS ===', uniqueNewSignals.length);
-      
-      return [...uniqueNewSignals, ...prevSignals];
-    });
-  } catch (error) {
-    console.error('Error generating signal:', error);
-  } finally {
-    setIsGenerating(false);
-  }
-};
 
-const fetchPositions = async () => {
+      setSignals(prevSignals => {
+        console.log('=== PREVIOUS SIGNALS ===');
+        prevSignals.forEach(s => console.log("Prev:", s.id, s.timestamp));
+        
+        const existingKeys = new Set(prevSignals.map(s => `${s.id}-${s.timestamp}`));
+        console.log('Existing keys:', Array.from(existingKeys));
+        
+        const uniqueNewSignals = newSignals.filter(s => {
+          const key = `${s.id}-${s.timestamp}`;
+          const isDupe = existingKeys.has(key);
+          console.log(`Checking ${key}: ${isDupe ? 'DUPLICATE' : 'UNIQUE'}`);
+          return !isDupe;
+        });
+        
+        console.log('=== UNIQUE NEW SIGNALS ===', uniqueNewSignals.length);
+        
+        return [...uniqueNewSignals, ...prevSignals];
+      });
+    } catch (error) {
+      console.error('Error generating signal:', error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const fetchPositions = async () => {
     setIsLoadingPositions(true);
     try {
       const response = await fetch('http://127.0.0.1:8000/positions');
@@ -105,6 +116,65 @@ const fetchPositions = async () => {
       setIsLoadingPositions(false);
     }
   };
+
+  const handleTrade = async (action: 'buy' | 'sell') => {
+    if (!ticker || !amount || isTrading) return;
+    
+    const amountNum = parseFloat(amount);
+    if (isNaN(amountNum) || amountNum <= 0) {
+      setNotification('Please enter a valid amount');
+      setTimeout(() => setNotification(''), 3000);
+      return;
+    }
+
+    setIsTrading(true);
+    try {
+      const endpoint = action === 'buy' 
+        ? 'http://127.0.0.1:8000/place-order'
+        : 'http://127.0.0.1:8000/sell-order';
+      
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ticker: ticker.toUpperCase(),
+          amount: amountNum
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || `${action} order failed`);
+      }
+
+      const result = await response.json();
+      console.log('Trade result:', result);
+      
+      // Clear form and refresh positions
+      setTicker('');
+      setAmount('');
+      await fetchPositions();
+      
+      setNotification(
+      `Successfully ${action === 'buy' ? 'bought' : 'sold'} $${amountNum} of ${ticker.toUpperCase()}`
+      );
+
+      setTimeout(() => setNotification(''), 4000);
+
+    } catch (error) {
+      console.error('Trade error:', error);
+      setNotification(
+      `Trade failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+      setTimeout(() => setNotification(''), 4000);
+
+    } finally {
+      setIsTrading(false);
+    }
+  };
+
   // Fetch positions on component mount and set up auto-refresh
   useEffect(() => {
     fetchPositions();
@@ -115,8 +185,17 @@ const fetchPositions = async () => {
     return () => clearInterval(interval);
   }, []);
 
+  const isFormValid = ticker.trim() !== '' && amount && parseFloat(amount) > 0;
+
   return (
+    
     <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+      {notification && (
+    <div className="notification">
+      {notification}
+    </div>
+    )}
+
       <header className="header">
         <div className="header__content">
           {/* Logo */} 
@@ -195,7 +274,7 @@ const fetchPositions = async () => {
             </div>
           </div>
 
-          {/* Right Half - Profit/Loss */}
+          {/* Right Half - Portfolio Overview */}
           <section className="panel panel--right">
             <h2>Portfolio Overview</h2>
             
@@ -222,6 +301,56 @@ const fetchPositions = async () => {
               </div>
             </div>
 
+            {/* Trading Interface */}
+            <div className="trading-interface">
+              <h3>Trade</h3>
+              <div className="trading-form">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Ticker Symbol</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g., AAPL"
+                      value={ticker}
+                      onChange={(e) => setTicker(e.target.value.toUpperCase())}
+                      disabled={isTrading}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Amount ($)</label>
+                    <input
+                      type="number"
+                      className="form-input"
+                      placeholder="e.g., 100.00"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      min="0"
+                      step="0.01"
+                      disabled={isTrading}
+                    />
+                  </div>
+                </div>
+                <div className="trading-buttons">
+                  <button
+                    className="trade-button trade-button--buy"
+                    onClick={() => handleTrade('buy')}
+                    disabled={!isFormValid || isTrading}
+                  >
+                    {isTrading ? 'Processing...' : 'Buy'}
+                  </button>
+                  <button
+                    className="trade-button trade-button--sell"
+                    onClick={() => handleTrade('sell')}
+                    disabled={!isFormValid || isTrading}
+                  >
+                    {isTrading ? 'Processing...' : 'Sell'}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Positions Section */}
             <div className="positions-section">
               <h3>Positions</h3>
               {positions.length === 0 ? (
@@ -233,7 +362,7 @@ const fetchPositions = async () => {
                       <div className="position-card__header">
                         <span className="position-card__symbol">{position.symbol}</span>
                         <span className="position-card__qty">{position.qty} shares</span>
-                        <span className="position-card_pps">{position.price_per_share} per share</span>
+                        <span className="position-card_pps">${position.price_per_share.toFixed(2)} per share</span>
                       </div>
                       <div className="position-card__details">
                         <div className="position-detail">

@@ -204,6 +204,176 @@
   border-radius: 12px;
 }
 
+/* Trading Interface */
+.trading-interface {
+  background-color: transparent;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.trading-interface h3 {
+  font-size: 1.25rem;
+  margin: 0 0 1rem 0;
+  color: #e2e8f0;
+}
+
+.trading-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.form-input {
+  background-color: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: #f8fafc;
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input::placeholder {
+  color: #64748b;
+}
+
+.trading-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.trade-button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Inter', system-ui, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trade-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.trade-button--buy {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.trade-button--buy:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.trade-button--sell {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.trade-button--sell:hover:not(:disabled) {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+.trade-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 150px;
+  background: rgba(59, 130, 246, 0.9);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  z-index: 9999;
+  animation: fadein 0.3s ease, fadeout 0.3s ease 3.7s;
+}
+
+/* Only fade, no transform */
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+/* Light Mode Trading Interface */
+.app-container.light-mode .trading-interface {
+  background-color: rgba(241, 245, 249, 0.8);
+}
+
+.app-container.light-mode .form-input {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #0f172a;
+}
+
+.app-container.light-mode .form-input::placeholder {
+  color: #94a3b8;
+}
+
+.app-container.light-mode .form-label {
+  color: #475569;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .trading-buttons {
+    flex-direction: column;
+  }
+}
+
 /* Generate Button */
 .generate-button {
   align-items: center;

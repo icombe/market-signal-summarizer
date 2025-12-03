@@ -106,6 +106,44 @@ def place_order(ticker, amount):
     except Exception as e:
         print(f"Error placing order for {ticker}:", e)
         return None
+    
+def sell_position(ticker, quantity=None, amount=None):
+    """
+    Sells a position - either by quantity of shares or dollar amount.
+    
+    Parameters:
+    - ticker: str, stock symbol
+    - quantity: int, number of shares to sell (optional)
+    - amount: numeric, dollar amount worth of shares to sell (optional)
+    
+    Returns the order object on success or None on failure.
+    """
+    try:
+        # Build the sell order request
+        if quantity:
+            # Sell specific number of shares
+            market_order_data = MarketOrderRequest(
+                symbol=ticker,
+                qty=quantity,
+                side=OrderSide.SELL,
+                time_in_force=TimeInForce.DAY
+            )
+        elif amount:
+            # Sell dollar amount worth of shares
+            market_order_data = MarketOrderRequest(
+                symbol=ticker,
+                notional=amount,
+                side=OrderSide.SELL,
+                time_in_force=TimeInForce.DAY
+            )
+        else:
+            raise ValueError("Must specify either quantity or amount")
+
+        return trading_client.submit_order(order_data=market_order_data)
+
+    except Exception as e:
+        print(f"Error selling {ticker}:", e)
+        return None
 
 def get_ytd_percent_change(ticker):
     """
