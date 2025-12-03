@@ -2,8 +2,9 @@
 
 # Follow the format for generateSignal()
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import uvicorn
 from datetime import datetime
 
@@ -19,6 +20,12 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
     allow_headers=["*"],  # Allows all headers
 )
+
+# Request model for trading
+class TradeRequest(BaseModel):
+    ticker: str
+    amount: float
+
 # @app.on_event("startup")
 def startup_event():
     alpaca_api.load_keys_and_client()
@@ -84,6 +91,72 @@ def get_positions():
             "buying_power": 0,
             "total_unrealized_pl": 0
         }
+
+@app.post("/place-order")
+def place_buy_order(trade: TradeRequest):
+    """
+    Place a buy order for a given ticker and dollar amount
+    """
+    try:
+        # Validate inputs
+        if not trade.ticker or trade.ticker.strip() == "":
+            raise HTTPException(status_code=400, detail="Ticker symbol is required")
+        
+        if trade.amount <= 0:
+            raise HTTPException(status_code=400, detail="Amount must be greater than 0")
+        
+        # Place the order
+        result = alpaca_api.place_order(trade.ticker.upper(), trade.amount)
+        
+        if result is None:
+            raise HTTPException(status_code=400, detail="Order placement failed. Check your API connection and account status.")
+        
+        return {
+            "success": True,
+            "message": f"Successfully placed buy order for ${trade.amount} of {trade.ticker.upper()}",
+            "order_id": str(result.id) if hasattr(result, 'id') else None,
+            "symbol": trade.ticker.upper(),
+            "amount": trade.amount
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error placing buy order: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to place order: {str(e)}")
+
+@app.post("/sell-order")
+def place_sell_order(trade: TradeRequest):
+    """
+    Place a sell order for a given ticker and dollar amount
+    """
+    try:
+        # Validate inputs
+        if not trade.ticker or trade.ticker.strip() == "":
+            raise HTTPException(status_code=400, detail="Ticker symbol is required")
+        
+        if trade.amount <= 0:
+            raise HTTPException(status_code=400, detail="Amount must be greater than 0")
+        
+        # Place the sell order
+        result = alpaca_api.sell_position(trade.ticker.upper(), amount=trade.amount)
+        
+        if result is None:
+            raise HTTPException(status_code=400, detail="Sell order failed. Check if you have a position in this ticker.")
+        
+        return {
+            "success": True,
+            "message": f"Successfully placed sell order for ${trade.amount} of {trade.ticker.upper()}",
+            "order_id": str(result.id) if hasattr(result, 'id') else None,
+            "symbol": trade.ticker.upper(),
+            "amount": trade.amount
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error placing sell order: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to place sell order: {str(e)}")
 
 
 if __name__ == "__main__":
