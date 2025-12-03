@@ -76,7 +76,7 @@ def getThreeArticles():
     return full_text_list
 
 def main():
-    getThreeArticles()
+    getOneArticle()
     
     
 
