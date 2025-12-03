@@ -17,6 +17,7 @@ interface Position {
   unrealized_plpc: number;
   change_today: number;
   change_today_pc: number;
+  price_per_share: number;
 }
 
 interface AccountData {
@@ -201,6 +202,7 @@ const fetchPositions = async () => {
                       <div className="position-card__header">
                         <span className="position-card__symbol">{position.symbol}</span>
                         <span className="position-card__qty">{position.qty} shares</span>
+                        <span className="position-card_pps">{position.price_per_share} per share</span>
                       </div>
                       <div className="position-card__details">
                         <div className="position-detail">
