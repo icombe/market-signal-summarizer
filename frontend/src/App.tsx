@@ -1,12 +1,17 @@
 import { useState , useEffect } from 'react';
 import './App.css';
 
+interface TickerRecommendation {
+  ticker: string;
+  recommended_action: string;
+}
+
 interface MarketSignal {
   id: number;
   timestamp: string;
   summary: string;
   sentiment: string;
-  action: string;
+  ticker_recommendations: TickerRecommendation[];
 }
 
 interface Position {
@@ -47,18 +52,31 @@ const generateMarketSignal = async () => {
   setIsGenerating(true);
   try {
     const response = await fetch("http://127.0.0.1:8000/signal");
-    const newSignal: MarketSignal = await response.json();
+    const newSignals: MarketSignal[] = await response.json();
 
-    // console.log('Received signal:', newSignal);
-    console.log('Signal details:', {
-      id: newSignal.id,
-      timestamp: newSignal.timestamp,
-      summary: newSignal.summary,
-      sentiment: newSignal.sentiment,
-      action: newSignal.action
+    console.log('=== NEW SIGNALS FROM API ===');
+    newSignals.forEach(sig => {
+      console.log("Signal:", sig.id, sig.timestamp);
     });
 
-    setSignals([newSignal, ...signals]); // Remove the duplicate
+    setSignals(prevSignals => {
+      console.log('=== PREVIOUS SIGNALS ===');
+      prevSignals.forEach(s => console.log("Prev:", s.id, s.timestamp));
+      
+      const existingKeys = new Set(prevSignals.map(s => `${s.id}-${s.timestamp}`));
+      console.log('Existing keys:', Array.from(existingKeys));
+      
+      const uniqueNewSignals = newSignals.filter(s => {
+        const key = `${s.id}-${s.timestamp}`;
+        const isDupe = existingKeys.has(key);
+        console.log(`Checking ${key}: ${isDupe ? 'DUPLICATE' : 'UNIQUE'}`);
+        return !isDupe;
+      });
+      
+      console.log('=== UNIQUE NEW SIGNALS ===', uniqueNewSignals.length);
+      
+      return [...uniqueNewSignals, ...prevSignals];
+    });
   } catch (error) {
     console.error('Error generating signal:', error);
   } finally {
@@ -139,27 +157,40 @@ const fetchPositions = async () => {
             {/* History Section */}
             <div className="history-container">
               <h2>History</h2>
-              <div className="history-section">
-                <div className="history-list">
+              <div className="history-list">
                   {signals.length === 0 ? (
-                    <p className="empty-state">No signals generated yet. Click the button above to generate your first market signal.</p>
+                    <p className="empty-state">
+                      No signals generated yet. Click the button above to generate your first market signal.
+                    </p>
                   ) : (
-                    signals.map((signal) => (
-                      <div key={signal.id} className="history-item">
+                    signals.map((signal, index) => (
+                      <div key={`${signal.id}-${signal.timestamp}-${index}`} className="history-item">
                         <div className="history-item__header">
                           <span className="history-item__time">{signal.timestamp}</span>
-                          <span className={`history-item__sentiment history-item__sentiment--${signal.sentiment.toLowerCase()}`}>
+                          <span
+                            className={`history-item__sentiment history-item__sentiment--${signal.sentiment.toLowerCase()}`}
+                          >
                             {signal.sentiment}
                           </span>
                         </div>
                         <p className="history-item__summary">{signal.summary}</p>
-                        <div className="history-item__action">
-                          Action: <strong>{signal.action}</strong>
+                        <div className="history-item__actions">
+                          {signal.ticker_recommendations.length === 0 ? (
+                            <div>No ticker recommendations</div>
+                          ) : (
+                            signal.ticker_recommendations.map((rec) => (
+                              <div key={rec.ticker} className="ticker-card">
+                                <div className="ticker-symbol">{rec.ticker}</div>
+                                <div className={`ticker-action ${rec.recommended_action.toLowerCase()}`}>
+                                  {rec.recommended_action.toUpperCase()}
+                                </div>
+                              </div>
+                            ))
+                          )}
                         </div>
                       </div>
                     ))
-                  )}
-                </div>
+                )}
               </div>
             </div>
           </div>

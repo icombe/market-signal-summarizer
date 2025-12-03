@@ -25,21 +25,21 @@ def startup_event():
 
 @app.get("/signal")
 def generate_signal():
-    apiData = main.generateSignal()
-    print(f'''
-        "id": {int(datetime.now().timestamp())},
-        "timestamp": {datetime.now().strftime("%Y-%m-%d %H:%M:%S")},
-        "summary": "{apiData['summary']}",
-        "sentiment": "{apiData['sentiment']}",
-        "action": "{apiData['action']}"
-    ''')
-    return {
-        "id": int(datetime.now().timestamp()),
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "summary": apiData['summary'],
-        "sentiment": apiData['sentiment'],
-        "action": apiData['action']
-    }
+    article_list = main.generateThreeSignal()   # list of 3 summaries
+
+    packaged = []
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    for article in article_list:
+        packaged.append({
+            "id": int(datetime.now().timestamp()),
+            "timestamp": timestamp,
+            "summary": article["summary"],
+            "sentiment": article["sentiment"],
+            "ticker_recommendations": article["ticker_recommendations"]
+        })
+
+    return packaged
 
 @app.get("/positions")
 def get_positions():

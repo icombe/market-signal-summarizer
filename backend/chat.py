@@ -33,12 +33,17 @@ def article_analysis(chat_responses_url, model, article_text: str, source: str =
 You are a financial analysis machine that takes news about the latest financial and stock market developments and summarizes
 them. Given the following full article, produce only a valid JSON object that contains these fields:
 {{
-    "summary" : "2-3 sentence summary of the article",
-    "sentiment_score" : "float between -1.0 and 1.0 reflecting the overarching sentiment of the article",
-    "sentiment_label" : "one of ["negative", "neutral", "positive"],
-    "key_entities" : ["list of important companies, people, and tickers"],
-    "suggested_action" : "one of ["buy", "hold", "sell"], reflecting your interpretation of short-term market impact",
-    "confidence" : "float between 0.0 and 1.0 reflecting confidence in your analysis"
+    "summary": "2-3 sentence summary of the article",
+    "sentiment_score": "float between -1.0 and 1.0 reflecting the overarching sentiment of the article",
+    "sentiment_label": "one of ['negative', 'neutral', 'positive']",
+    "ticker_recommendations": [
+        {{
+            "ticker": "the stock ticker mentioned in the article",
+            "recommended_action": "one of ['buy', 'hold', 'sell']"
+        }}
+        // include one entry per ticker found in the article
+    ],
+    "confidence": "float between 0.0 and 1.0 reflecting confidence in your analysis"
 }}
 
 article source: {source}

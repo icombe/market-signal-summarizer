@@ -11,7 +11,8 @@ def generateThreeSignal():
         new_dict = {}
         new_dict['summary'] = article['summary']
         new_dict['sentiment'] = article['sentiment_label']
-        new_dict['action'] = article['suggested_action']
+        # new_dict['action'] = article['suggested_action']
+        new_dict["ticker_recommendations"] = article.get("ticker_recommendations", [])
         front_end_dicts.append(new_dict)
         
     return front_end_dicts
@@ -24,7 +25,7 @@ def generateSignal():
         new_dict = {}
         new_dict['summary'] = article['summary']
         new_dict['sentiment'] = article['sentiment_label']
-        new_dict['action'] = article['suggested_action']
+        new_dict["ticker_recommendations"] = article.get("ticker_recommendations", [])
         front_end_dicts.append(new_dict)
         
     return front_end_dicts[0]
