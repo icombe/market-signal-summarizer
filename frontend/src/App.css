@@ -578,6 +578,45 @@
   color: #1e293b;
 }
 
+.ticker-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
+}
+
+.ticker-symbol {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.ticker-action {
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+/* Color codes */
+.ticker-action.buy {
+  background-color: rgba(0, 200, 0, 0.15);
+  color: #00c000;
+}
+
+.ticker-action.sell {
+  background-color: rgba(255, 0, 0, 0.15);
+  color: #ff3b30;
+}
+
+.ticker-action.hold {
+  background-color: rgba(255, 200, 0, 0.15);
+  color: #d4a300;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .split-layout {
