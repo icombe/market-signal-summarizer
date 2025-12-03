@@ -88,21 +88,6 @@ npm run dev
 
 5. Admire your Alpaca Overview
 
-### Running the Application
-
-1. Start the backend server:
-   ```bash
-   cd backend
-   uvicorn main:app --reload
-   ```
-
-2. Start the frontend:
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-
-3. Open your browser to `http://localhost:3000`
 
 ### Features
 
