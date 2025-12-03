@@ -22,7 +22,9 @@ def load_keys_and_client():
     try:
         load_dotenv()
         alpaca_key = os.getenv("TEST_KEY")
+        # alpaca_key = os.getenv("ALPACA_API_KEY")
         secret_key = os.getenv("TEST_SECRET_KEY")
+        # secret_key = os.getenv("ALPACA_SECRET_API_KEY")
 
         # make sure we have keys
         if not alpaca_key or not secret_key:
