@@ -1,136 +1,97 @@
 # Market Signal Summarizer
 
-An LLM-based application that summarizes financial news from Finnhub News API and SEC EDGAR filings (if free) and integrates with paper trading.
+An AI-powered financial analysis tool that aggregates market news, generates concise summaries using LLMs, and provides actionable trading insights. The application integrates with the Alpaca API for paper trading and portfolio management.
 
-## Architecture
+## 🚀 Features
 
-### System Components
+- **AI-Driven Summarization:** Uses OpenAI's GPT models to summarize complex financial news articles into actionable insights.
+- **Real-Time Market Data:** Fetches the latest financial news via the Marketaux API.
+- **Sentiment Analysis:** Analyzes news sentiment to gauge market trends.
+- **Paper Trading Integration:** Connects with Alpaca to simulate trades based on generated signals.
+- **Interactive Dashboard:** A modern React-based frontend to view summaries, signals, and portfolio performance.
 
-- **Frontend:** React with Vite Using Recharts for Alpaca portfolio data.
-- **Backend:** Python with FastAPI for secure communication with Alpaca API and web services. Custom solutions using Starlette and Pydantic for data validation and async operations.
-- **Deployment:** Local server using Uvicorn (ASGI) to minimize costs and legal constraints.
-- **LLM:** ChatGPT API (via OpenAI) for summarization.
-- **Market Data:** marketaux API for current financial news data
+## 🛠️ Tech Stack
 
-### Application Flow
+### Frontend
+- **Framework:** React (with Vite)
+- **Language:** TypeScript
 
-1. Obtain news from Marketaux API (free version) and (maybe) SEC EDGAR filings API
-2. Normalize, dedupe, and link tickers
-3. Retrieve relevant passages for queries/tickers (Retrieval-Augmented Generation)
-4. Summarize with ChatGPT API
-5. Display summaries and signals in React UI
-6. Optional paper trade execution via Alpaca API
-7. Log trades and track basic P&L locally
+### Backend
+- **Framework:** FastAPI (Python)
+- **AI/LLM:** OpenAI API
+- **Data Sources:** Marketaux API (News), Alpaca API (Trading)
+- **Scraping:** Trafilatura
+- **Server:** Uvicorn
 
-## Installation
+## 📦 Installation
 
 ### Prerequisites
-
-- Node.js (for frontend) - Download from [nodejs.org](https://nodejs.org/) (LTS version recommended)
-- NPM Version 11.6.2
-- Python 3.8+ (for backend)
-- OpenAI API key (for ChatGPT)
-- Marketaux API key (free tier available)
-- Alpaca API credentials (for paper trading)
-
-### Frontend Setup
-
-1. **Install Node.js and npm:**
-   - Download and install Node.js from [nodejs.org](https://nodejs.org/).
-   - npm is included with Node.js. Verify installation:
-     ```bash
-     node --version
-     npm --version
-     ```
-
-2. **Clone the repository:**
-   ```bash
-   git clone https://github.com/icombe/market-signal-summarizer.git
-   cd market-signal-summarizer
-   ```
-
-3. **Install frontend dependencies:**
-   ```bash
-   cd frontend
-   npm install
-   ```
-   This will install all required packages listed in `package.json`, including React, Vite, and TypeScript dependencies.
+- Node.js (LTS version recommended)
+- Python 3.8+
+- API Keys for:
+  - OpenAI
+  - Marketaux
+  - Alpaca (Paper Trading)
 
 ### Backend Setup
 
-1. **Install backend dependencies:**
+1. Navigate to the backend directory:
    ```bash
-   cd ../backend
+   cd backend
+   ```
+
+2. Create a virtual environment (optional but recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
    pip install -r requirements.txt
    ```
 
-2. **Set up environment variables:**
-   - Create `.env` file in backend directory
-   - Add your OpenAI API key: `OPENAI_API_KEY=your_key_here`
-   - Add Marketaux API key: `MARKETAUX_API_KEY=your_key_here`
-   - Add Alpaca credentials if using paper trading
+4. Configure environment variables:
+   Create a `.env` file in the `backend` directory with the following keys:
+   ```env
+   OPENAI_API_KEY=your_openai_key
+   MARKETAUX_API_KEY=your_marketaux_key
+   ALPACA_API_KEY=your_alpaca_key
+   ALPACA_SECRET_API_KEY=your_alpaca_secret
+   ```
 
-## Usage
+### Frontend Setup
 
-1. download all dependancies (See Above)
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
 
-2. Start by running the backend integration application in one terminal
-```
-python ./frontendApiMain.py
-```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-3. Start the Frontend applicaton in another terminal and Ctrl + Click the localhost link to bring up the website
-```
-npm run dev
-```
+## 🏃‍♂️ Usage
 
-4. Click Generate prediction *Note* this may take a while.
+1. **Start the Backend Server:**
+   ```bash
+   # From the backend directory
+   python frontendApiMain.py
+   ```
+   The API will run on `http://localhost:8000` (or the port specified in the console).
 
-5. Admire your Alpaca Overview
+2. **Start the Frontend Application:**
+   ```bash
+   # From the frontend directory
+   npm run dev
+   ```
+   Open the provided localhost URL (usually `http://localhost:5173`) in your browser.
 
+3. **Generate Signals:**
+   - Click the "Generate Prediction" button on the dashboard.
+   - The system will fetch the latest news, summarize it, and display trading recommendations.
 
-### Features
+## 📄 License
 
-- News ingestion and summarization
-- Paper trading integration
-- Profit/loss tracking
-
-## Development
-
-### Project Structure
-
-```
-market-signal-summarizer/
-├── frontend/          # React application
-├── backend/           # FastAPI server
-├── README.md
-└── .gitignore
-```
-
-### Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-### Testing
-
-Run tests with:
-```bash
-# Backend tests
-cd backend
-pytest
-
-# Frontend tests
-cd frontend
-npm test
-```
-
-## License
-
-This project is for educational purposes as part of CSCI/DSCI 470/570.
-
-## Contributions
-
-[Hamster Loading Wheel](https://uiverse.io/Nawsome/wet-mayfly-23)
+This project is licensed under the MIT License.
