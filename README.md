@@ -2,7 +2,7 @@
 
 An AI-powered financial analysis tool that aggregates market news, generates concise summaries using LLMs, and provides actionable trading insights. The application integrates with the Alpaca API for paper trading and portfolio management.
 
-## 🚀 Features
+## Features
 
 - **AI-Driven Summarization:** Uses OpenAI's GPT models to summarize complex financial news articles into actionable insights.
 - **Real-Time Market Data:** Fetches the latest financial news via the Marketaux API.
@@ -10,7 +10,7 @@ An AI-powered financial analysis tool that aggregates market news, generates con
 - **Paper Trading Integration:** Connects with Alpaca to simulate trades based on generated signals.
 - **Interactive Dashboard:** A modern React-based frontend to view summaries, signals, and portfolio performance.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **Framework:** React (with Vite)
@@ -23,7 +23,7 @@ An AI-powered financial analysis tool that aggregates market news, generates con
 - **Scraping:** Trafilatura
 - **Server:** Uvicorn
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 - Node.js (LTS version recommended)
@@ -72,7 +72,7 @@ An AI-powered financial analysis tool that aggregates market news, generates con
    npm install
    ```
 
-## 🏃‍♂️ Usage
+## Usage
 
 1. **Start the Backend Server:**
    ```bash
@@ -92,6 +92,6 @@ An AI-powered financial analysis tool that aggregates market news, generates con
    - Click the "Generate Prediction" button on the dashboard.
    - The system will fetch the latest news, summarize it, and display trading recommendations.
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
